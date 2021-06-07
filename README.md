@@ -222,5 +222,16 @@ Compile the ahk file. Set the variables in `config.cfg` to the preferred values,
                 </dl>
             </td>
         </tr>
+        <tr>
+            <td align="center">3.3</td>
+            <td>
+                <dl>
+                    <dt>new</dt>
+                    <ul>
+                        <li>updated to use logging</li>
+                    </ul>
+                </dl>
+            </td>
+        </tr>
     </tbody>
 </table>

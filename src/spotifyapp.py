@@ -1,32 +1,40 @@
-from win32gui import SetForegroundWindow, SetWindowPos, ShowWindow
-from win32con import HWND_BOTTOM, HWND_TOP, SW_SHOWNOACTIVATE
-from pywinauto.timings import (wait_until as win_wait_until,
-                               TimeoutError as pywinTimeoutError)
+from pywinauto.timings import wait_until as win_wait_until
+from pywinauto.controls.hwndwrapper import HwndWrapper
 from pywinauto.application import Application
 from tkinter import messagebox as Mbox
 from operator import ne as op_ne
 from time import sleep
+from win32gui import (
+    SetForegroundWindow,
+    SetWindowPos,
+    ShowWindow
+)
+from win32con import (
+    HWND_BOTTOM,
+    HWND_TOP,
+    SW_SHOWNOACTIVATE
+)
 
 from ..lib.constants import *
 
 if TYPE_CHECKING:
-    from pywinauto.application import WindowSpecification
     from ..player import GUI
 
 
 class SpotifyApp:
     app: Application
-    base: "WindowSpecification"
-    win: "WindowSpecification"
+    base: HwndWrapper
+    win: HwndWrapper
     startTitle: str
     posY: int
+    hideloop: int
 
     def __init__(self, root: "GUI"):
-        self.closeOld()
         self.startApp()
         self.startTitle = self.getText()
         root.updateText(self.startTitle)
         self.showSpotify()
+        self.hideloop = 0
         ct = 0
         while True:
             try:
@@ -45,43 +53,31 @@ class SpotifyApp:
                 ct = 0
                 self.showSpotify()
 
-    @staticmethod
-    def closeOld() -> None:
-        try:
-            Application().connect(title=SPOTIFY_TITLE).kill(soft=True)
-        finally:
-            return
-
     def startApp(self) -> None:
         self.win = None
         i = 0
-        self.app = Application().start(SPOTIFY_EXE)
         while not self.win:
+            if i == 4:
+                self.showError()
+                i = 0
+            if i in [0, 2]:
+                try:
+                    Application().connect(title=SPOTIFY_TITLE).kill(soft=True)
+                except:
+                    pass
+                self.app = Application().start(SPOTIFY_EXE)
             try:
-                self.base = self.app.top_window()
+                self.base = self.app.top_window().wrapper_object()
                 self.win = self.base.top_level_parent()
                 self.win.set_transparency(0)
                 self.posY = self.base.rectangle().top
                 self.win.move_window(y=-50)
                 win_wait_until(timeout=3,
-                               retry_interval=0.1,
+                               retry_interval=0.05,
                                func=self.win.window_text,
                                value=SPOTIFY_TITLE)
             except:
                 i += 1
-                if i == 2:
-                    try:
-                        self.closeOld()
-                        self.app = Application().start(SPOTIFY_EXE)
-                    except:
-                        pass
-                elif i == 4:
-                    i = 0
-                    try:
-                        self.closeOld()
-                        self.app = Application().start(SPOTIFY_EXE)
-                    except:
-                        self.showError()
 
     def getText(self) -> str:
         sleep(2.5)
@@ -98,7 +94,7 @@ class SpotifyApp:
                            op=op_ne)
             sleep(0.1)
             nowPlaying = str(self.win.window_text())
-        except pywinTimeoutError:
+        except:
             nowPlaying = str('  -  ')
         # stop playing
         self.win.send_keystrokes('{SPACE}')
@@ -115,9 +111,13 @@ class SpotifyApp:
         SetWindowPos(self.win.handle, HWND_BOTTOM, 0, 0, 0, 0, BOTTOM_FLAGS)
         self.win.move_window(y=-50)
         if self.win.has_focus():
+            if self.hideloop > 9:
+                self.hideloop = 0
             try:
                 SetForegroundWindow(DESKTOP_HWND)
-            except Exception:
+                self.hideloop = 0
+            except:
+                self.hideloop += 1
                 self.hideSpotify()
 
     def showSpotify(self) -> None:

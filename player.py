@@ -76,7 +76,7 @@ class GUI(Tk):
         # build GUI elements
         self.createPlayer()
         self.updateLabels()
-        self.update_idletasks()
+        self.update()
         pMenu = PlayerMenu(self)
         # start spotify
         self.spotify = SpotifyApp(self)
