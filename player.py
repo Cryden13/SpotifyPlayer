@@ -1,4 +1,5 @@
 from time import sleep
+
 from win32gui import (
     FindWindow,
     SetWindowLong,

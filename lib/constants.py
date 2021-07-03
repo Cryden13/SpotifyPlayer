@@ -2,6 +2,7 @@ from collections import OrderedDict as oDict
 from re import split as re_split
 from win32gui import FindWindow
 from pathlib import Path
+
 from win32con import (
     SWP_NOACTIVATE,
     SWP_NOMOVE,

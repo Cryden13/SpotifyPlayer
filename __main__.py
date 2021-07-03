@@ -1,6 +1,6 @@
 from warnings import simplefilter
 from commandline import openfile
-from winnotify import playSound
+from winnotify import PlaySound
 from pathlib import Path
 from sys import argv
 import logging
@@ -32,7 +32,7 @@ def main():
         raise
     finally:
         if logfile.read_text() and argv[-1] != 'console':
-            playSound()
+            PlaySound()
             openfile(logfile)
         changeShortcut(SPOTIFY_AHK)
 
