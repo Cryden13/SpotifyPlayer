@@ -56,17 +56,17 @@ FONT_DEF = cfg.get(sct, 'player_font')
 
 # color vars
 sct = 'Colors'
-CLR_BG = cfg.get(sct, 'transparent')
 CLR_TEXT = cfg.get(sct, 'text')
 CLR_BTNS = cfg.get(sct, 'buttons')
 CLR_BTN_HOVER = cfg.get(sct, 'button_hover')
+CLR_BG = cfg.get(sct, 'shadow')
 
 # size vars
 sct = 'Sizes'
 BTN_SIZE = cfg.getint(sct, 'buttons')
-LBL_W = cfg.getint(sct, 'text_width')
-OFFSET_X = cfg.getint(sct, 'horizontal_offset')
-OFFSET_Y = cfg.getint(sct, 'vertical_offset')
+LBL_W = cfg.getint(sct, 'textbox_width')
+OFFSET_X = cfg.getint(sct, 'right_side_offset')
+OFFSET_Y = cfg.getint(sct, 'bottom_side_offset')
 
 # btn point vars
 sct = 'Button Points'
@@ -129,3 +129,13 @@ del (ConfigParser,
      sct,
      lbltxt)
 cfg['DEFAULT'].clear()
+
+
+if __name__ == '__main__':
+    print('\n'.join([f'{k}={v}' for k, v in
+                     locals().items()
+                     if k[:2] != '__'
+                     and not isinstance(k, Screen)]))
+    print('Screen:\n  ' + '\n  '.join([f'{k}={v}' for k, v in
+                                       Screen.__dict__.items()
+                                       if k[:2] != '__']))

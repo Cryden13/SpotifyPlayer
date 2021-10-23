@@ -26,21 +26,21 @@ Compile the ahk file. Set the variables in `config.cfg` to the preferred values,
 
 ### Colors
 
-- **transparent:** this color will be made transparent
 - **text:** the color to make the text
 - **buttons:** the color to make the buttons
 - **button_hover:** the color to make the buttons if the mouse is over them
+- **shadow:** the color to make the text and button shadow. Must be different than any others
 
 ### Size Variables
 
 - **buttons:** the height and width of the buttons, in pixels
-- **text_width:** the width of the scrolling text on both sides of the player, in pixels
-- **horizontal_offset:** the number of pixels to offset the player by from the right edge of the screen
-- **vertical_offset:** the number of pixels to offset the player by from the bottom of the screen
+- **textbox_width:** the width of the scrolling text on both sides of the player, in pixels
+- **right_side_offset:** the number of pixels to offset the player by from the right edge of the screen
+- **bottom_side_offset:** the number of pixels to offset the player by from the bottom of the screen
 
 ### Button Points
 
-- a list of points for each button that are used to create the button's polygonal shape
+- a list of points for each button that are used to create the buttons' polygonal shapes
 
 ### Advanced Variables
 
@@ -229,6 +229,21 @@ Compile the ahk file. Set the variables in `config.cfg` to the preferred values,
                     <dt>new</dt>
                     <ul>
                         <li>updated to use logging</li>
+                    </ul>
+                </dl>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">3.4</td>
+            <td>
+                <dl>
+                    <dt>new</dt>
+                    <ul>
+                        <li>added shadow variable</li>
+                    </ul>
+                    <dt>bugfixes</dt>
+                    <ul>
+                        <li>fixed shadow issue</li>
                     </ul>
                 </dl>
             </td>
