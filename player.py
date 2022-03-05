@@ -115,7 +115,8 @@ class GUI(Tk):
 
         cnv = Canvas(master=self,
                      height=BTN_SIZE,
-                     width=BTN_SIZE)
+                     width=BTN_SIZE,
+                     highlightthickness=0)
         # create outline
         cir: int = cnv.create_oval(0, 0, BTN_SIZE - 1, BTN_SIZE - 1,
                                    outline=CLR_BTNS)
